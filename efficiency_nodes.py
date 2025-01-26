@@ -2696,6 +2696,7 @@ class TSC_XYplot_PromptSR:
                 "target_prompt": (["positive", "negative"],),
                 "search_txt": ("STRING", {"default": "", "multiline": False}),
                 "replace_count": ("INT", {"default": XYPLOT_DEF, "min": 0, "max": XYPLOT_LIM-1}),
+                "skip_base": ("BOOLEAN", {"default": False}),
             }
         }
 
@@ -2711,7 +2712,7 @@ class TSC_XYplot_PromptSR:
     FUNCTION = "xy_value"
     CATEGORY = "Efficiency Nodes/XY Inputs"
 
-    def xy_value(self, target_prompt, search_txt, replace_count, **kwargs):
+    def xy_value(self, target_prompt, search_txt, replace_count, skip_base, **kwargs):
         if search_txt == "":
             return (None,)
 
@@ -2722,6 +2723,9 @@ class TSC_XYplot_PromptSR:
 
         # Create base entry
         xy_values = [(search_txt, None)]
+
+        if skip_base:
+            xy_values = []
 
         if replace_count > 0:
             # Append additional entries based on replace_count
